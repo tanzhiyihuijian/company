@@ -1,8 +1,7 @@
-package cc.laowantong.utils;
+package cc.laowantong.util;
 
-import cc.laowantong.utils.security.md5.MD5Object;
-import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;

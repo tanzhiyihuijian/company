@@ -1,4 +1,4 @@
-package cc.laowantong.utils;
+package cc.laowantong.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.regex.Pattern;

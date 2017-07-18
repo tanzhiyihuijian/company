@@ -1,4 +1,4 @@
-package cc.laowantong.utils.security.md5;
+package cc.laowantong.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
