@@ -1,0 +1,242 @@
+
+note_2_1
+
+上午
+
+	maven scope 
+		* compile，缺省值，适用于所有阶段，会随着项目一起发布。 
+	    * provided，类似compile，期望JDK、容器或使用者会提供这个依赖。如servlet.jar。 
+	    * runtime，只在运行时使用，如JDBC驱动，适用运行和测试阶段。 
+	    * test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。 
+	    * system，类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它。 
+
+
+	chosen使用 (jQuery plugin)
+
+
+
+
+下午
+	
+	mall_shop
+		ourOpreator  = managerid
+
+	manager
+		id 					267	 						256  			251
+		name 				meng.lv@laowantong.cc   	tangxiaowu		shuangshuang.wang			
+
+	manager_role
+		roleId				20
+		managerId 			267	 256  251
+
+	role
+		id 					20 				
+		name				mall-market-operator
+
+
+-----------------------------------------------------
+
+
+mysql 
+
+	IFNULL(expr_1, expr_2)
+
+	如果expr1不是NULL，IFNULL()返回expr1，否则它返回expr2。
+	IFNULL()返回一个数字或字符串值，取决于它被使用的上下文环境。      
+
+
+
+
+select 
+	s.id, 
+	s.name, 
+	s.shopType, 
+	s.distributorName,
+	s.phone,
+	s.ourOperator 
+	count(distinct(d.orderNumber)) as orderCount,
+	count(distinct(d.productId)) as productCount,
+	ifnull(sum(d.productPrice * d.number + d.payCoin - d.preferentialAmount -d.lwtPreferentialAmount)/100,0) as  saleAmount    
+from
+    gcw_mall_shop s left join gcw_mall_order_parent p 
+on 
+	s.id = p.shopId 
+left join gcw_mall_order_detail d 
+on
+    d.orderNumber = p.orderNumber and d.status > 1 and d.status > 41 and d.status != 11 and d.actId = 0
+
+
+
+
+
+mall_shop
+	id
+
+mall_order_parent
+	shopId
+	orderName
+
+mall_order_detail
+	orderNumber
+	
+
+
+----------------------------------------------------------------
+
+note_2_2
+
+上午
+
+ssm-template
+
+revert update commit merge
+
+
+下午
+
+
+
+
+select 
+	ifnull(sum(shipMoney),0) 
+from (
+    select 
+    	(p.shipPrice/100 - p.returnShipMoney/100) as shipMoney, d.orderNumber
+    from 
+    	gcw_mall_shop s left join gcw_mall_order_parent p 
+    on 
+    	s.id = p.shopId and p.status > 1 and p.status < 41 and p.status != 11
+    left join 
+    	gcw_mall_order_detail d 
+    on 
+    	d.orderNumber= p.orderNumber and d.actId=0
+    where 
+    	s.id = #{shopId} and p.createTime > #{fromDate} and p.createTime < #{toDate}
+    group by 
+    	d.orderNumber
+ ) t
+
+
+
+mall_shop
+	id
+
+
+mall_order_parent
+	shopId
+	status
+	orderNumber
+	createTime
+	shipPrice
+	returnShipMoney
+
+mall_order_detail
+	order_Number
+	actId
+
+
+
+
+
+shipMoney 		
+
+
+--------------------------------------------------------------------
+
+note_2_3
+
+
+
+
+
+
+ModelAndView 
+Map
+Model
+ModelMap
+
+
+ModelAndView()
+ModelAndView(String viewName)
+ModelAndView(View view)
+ModelAndView(String viewName, Map<String, ?> map)
+ModelAndView(View view, Map<String, ?> model)
+ModelAndView(String viewName, String modelName, Object modelObject)
+ModelAndView(View view, String modelName, Object modelObject)
+
+
+model, map, modelMap 的区别
+
+
+public interface Model
+	|-- BindingAwareModelMap
+	|-- ExtendedModelMap
+	|-- RedirectAttributes (interface)
+	|-- RedirectAttributesModelMap
+
+
+
+public class ModelMap extends LinkedHashMap<String, Object>
+
+
+
+
+SignUtil
+	getCommonSign(T ...params)
+	getCommonSignData(T ...params)
+
+
+MD5Object
+	MD5Sum(String input)
+
+
+MessageDigest (数字摘要)
+
+
+Controller
+
+    @InitBinder
+
+PropertiesEditor
+    |-- DoubleEditor
+    |-- IntegerEditor
+    |-- FloatEditor
+    |-- LongEditor
+    |-- dateEditor
+
+	
+URLDecoder
+
+
+
+
+
+
+--------------------------------------------
+
+Spring mvc与 json数据交互
+
+
+
+
+
+
+
+
+----------------------------------------
+
+
+gcw_mall_product
+
+gcw_mall_product_spec
+
+
+
+
+List<MallProductSpec> specs
+
+
+微信分享
+
+
+

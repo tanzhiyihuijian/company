@@ -1,0 +1,83 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+    <!--组件扫描器-->
+    <!-- 使用组件扫描的方式可以一次扫描多个Controller, 多个包之间用逗号隔开 -->
+    <context:component-scan base-package="cc.laowantong.controller"/>
+
+
+    <!--视图解析器-->
+    <!--视图解析器
+      InternalResourceViewResolver: 支持 jsp的视图解析器
+      viewClass: JstlView表示 jsp模版页面需要使用 jstl标签, 所以需要引入 jstl相关 jar包
+      prefix: 查找 jsp页面的前缀 (最终视图的地址为: prefix + viewName + suffix )
+      suffix: 后缀名
+    -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+
+    <!--注解的处理器映射器和处理器适配器
+        conversion-service="conversionService"
+    -->
+    <mvc:annotation-driven />
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter"/>-->
+    <!--<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>-->
+
+<!--
+
+    &lt;!&ndash;配置全局异常处理器&ndash;&gt;
+    &lt;!&ndash; 只有一个全局异常处理器起作用 &ndash;&gt;
+    <bean id="exceptionResolver" class="cc.laowantong.resolver.ExceptionResolver"/>
+
+
+    &lt;!&ndash;配置文件上传解析器&ndash;&gt;
+     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="9242880"/>
+     </bean>
+
+
+    &lt;!&ndash;自定义参数类型绑定&ndash;&gt;
+    <bean id="conversiontionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set >
+                <bean class="cc.laowantong.converter.DateConverter" />
+            </set>
+        </property>
+    </bean>
+
+
+    &lt;!&ndash;如果前端控制器拦截了所有的请求, 不做特殊处理会导致部分静态资源无法使用
+        使用下面的配置来访问静态资源
+    &ndash;&gt;
+    <mvc:resources mapping="/images/**" location="/static/img/"/>
+    <mvc:resources mapping="/css/**" location="/static/css/"/>
+    <mvc:resources mapping="/js/**" location="/static/js/"/>
+    <mvc:resources mapping="/imagedata/**" location="/static/imagedata/"/>
+
+
+    &lt;!&ndash;拦截器&ndash;&gt;
+    <mvc:interceptors>
+        &lt;!&ndash;直接定义拦截所有的请求&ndash;&gt;
+        <bean class="cc.laowantong.interceptor.IdentityInterceptor"/>
+        &lt;!&ndash;<mvc:interceptor>
+            &lt;!&ndash;拦截所有的请求, 包括子路径&ndash;&gt;
+            <mvc:mapping path="/**"/>
+            <bean class="cc.laowantong.interceptor.IdentityInterceptor"/>
+        </mvc:interceptor>&ndash;&gt;
+    </mvc:interceptors>
+-->
+
+
+</beans>
