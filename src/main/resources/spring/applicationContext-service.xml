@@ -12,7 +12,7 @@
 
 
     <!--定义service实现类-->
-    <bean id="userService" class="cc.laowantong.service.impl.UserService"/>
+    <bean id="userService" class="cc.laowantong.base.service.impl.UserService"/>
 
 
 

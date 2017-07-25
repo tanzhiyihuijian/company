@@ -7,7 +7,7 @@
     <!--为实体类定义别名-->
     <typeAliases>
         <!--批量定义别名, 指定包名, 自动扫描包中的类, 别名几位类名, 首字母大小写无所谓-->
-        <package name="cc.laowantong.pojo"/>
+        <package name="cc.laowantong.base.nodel.pojo"/>
     </typeAliases>
 
 
