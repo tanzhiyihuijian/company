@@ -12,7 +12,8 @@
 
 
     <!--定义service实现类-->
-    <bean id="userService" class="cc.laowantong.base.service.impl.UserService"/>
+    <!--使用注解-->
+    <!--<bean id="userService" class="UserService"/>-->
 
 
 

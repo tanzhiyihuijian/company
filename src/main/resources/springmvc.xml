@@ -11,7 +11,7 @@
 
     <!--组件扫描器-->
     <!-- 使用组件扫描的方式可以一次扫描多个Controller, 多个包之间用逗号隔开 -->
-    <context:component-scan base-package="cc.laowantong.web.springmvc.controller"/>
+    <context:component-scan base-package="cn.com.dom4j.web.springmvc.controller"/>
 
 
     <!--视图解析器-->
@@ -39,7 +39,7 @@
 
     &lt;!&ndash;配置全局异常处理器&ndash;&gt;
     &lt;!&ndash; 只有一个全局异常处理器起作用 &ndash;&gt;
-    <bean id="exceptionResolver" class="cc.laowantong.web.springmvc.resolver.ExceptionResolver"/>
+    <bean id="exceptionResolver" class="ExceptionResolver"/>
 
 
     &lt;!&ndash;配置文件上传解析器&ndash;&gt;
@@ -52,7 +52,7 @@
     <bean id="conversiontionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set >
-                <bean class="cc.laowantong.web.springmvc.converter.DateConverter" />
+                <bean class="DateConverter" />
             </set>
         </property>
     </bean>
@@ -70,11 +70,11 @@
     &lt;!&ndash;拦截器&ndash;&gt;
     <mvc:interceptors>
         &lt;!&ndash;直接定义拦截所有的请求&ndash;&gt;
-        <bean class="cc.laowantong.web.springmvc.interceptor.IdentityInterceptor"/>
+        <bean class="IdentityInterceptor"/>
         &lt;!&ndash;<mvc:interceptor>
             &lt;!&ndash;拦截所有的请求, 包括子路径&ndash;&gt;
             <mvc:mapping path="/**"/>
-            <bean class="cc.laowantong.web.springmvc.interceptor.IdentityInterceptor"/>
+            <bean class="IdentityInterceptor"/>
         </mvc:interceptor>&ndash;&gt;
     </mvc:interceptors>
 -->

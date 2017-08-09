@@ -7,7 +7,7 @@
     <!--为实体类定义别名-->
     <typeAliases>
         <!--批量定义别名, 指定包名, 自动扫描包中的类, 别名几位类名, 首字母大小写无所谓-->
-        <package name="cc.laowantong.base.nodel.pojo"/>
+        <package name="cn.com.dom4j.base.nodel.pojo"/>
     </typeAliases>
 
 
@@ -18,10 +18,10 @@
         <!--这里也可以使用 class来加载映射文件, 前提是使用 mapper代理的方法, 遵循规范,
             并且两个文件必须同名且在同一目录
         -->
-        <!--<mapper class="cc.laowantong.dao.mapper.UserMapper"/>-->
+        <!--<mapper class="cn.com.dom4j.dao.mapper.UserMapper"/>-->
 
         <!--通过扫描包的方式来批量加载映射文件-->
-        <package name="cc.laowantong.dao.mapper.config" />
+        <package name="cn.com.dom4j.base.dao.mapper.config" />
     </mappers>
 
 
