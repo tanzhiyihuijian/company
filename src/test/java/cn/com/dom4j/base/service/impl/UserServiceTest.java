@@ -7,6 +7,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -19,13 +21,13 @@ import javax.annotation.Resource;
 @ContextConfiguration({"classpath:springmvc.xml", "classpath:spring/applicationContext-*.xml"})
 public class UserServiceTest {
 
-    @Resource
-    private IUserService userService;
+//    @Resource
+//    private IUserService userService;
 
     @Test
     public void listUser() throws Exception {
 
-        userService.listUser();
+//        userService.listUser();
 
 
     }

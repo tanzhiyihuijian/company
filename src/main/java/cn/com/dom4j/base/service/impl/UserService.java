@@ -1,7 +1,7 @@
 package cn.com.dom4j.base.service.impl;
 
-import cn.com.dom4j.base.model.pojo.User;
 import cn.com.dom4j.base.dao.impl.UserDao;
+import cn.com.dom4j.base.model.pojo.User;
 import cn.com.dom4j.base.service.IUserService;
 import org.springframework.stereotype.Service;
 

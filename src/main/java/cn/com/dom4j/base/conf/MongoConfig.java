@@ -46,7 +46,7 @@ public class MongoConfig {
     private String password;
     @Value("${mongodb.database}")
     private String database;
-    @Value("${mongodb.collection")
+    @Value("${mongodb.collection}")
     private String collection;
 
 

@@ -13,7 +13,31 @@
 <head>
     <title>test1.jsp</title>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery-3.2.1.min.js"></script>
+    <%--<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/jquery.js"></script>--%>
+
+
+    <%--
+
+    requirejs以一个相对于 baseUrl的地址来加载所有的代码
+    1. 不配置 baseUrl, 也不使用 data-main属性, baseUrl的路径就是相对于 html页面的路径 (请求 url)
+    2. 使用 data-main属性: baseUrl是相对于 data-main对应的js的路径  (推荐使用)
+    3. 配置 baseUrl  (需要拿到应用程序的路径)
+
+
+    --%>
+
+    <script>
+        const jsBasePath = '${pageContext.request.contextPath}' + '/static/js/';
+    </script>
+
+
+    <%--<script src="${pageContext.request.contextPath}/static/js/require.js"></script>--%>
+    <%--<script src="${pageContext.request.contextPath}/static/js/module/app.js"></script>--%>
+
+    <%--  第二种方式 --%>
+    <script data-main="${pageContext.request.contextPath}/static/js/module/app"
+            src="${pageContext.request.contextPath}/static/js/require.js"></script>
+
 
 </head>
 <body>

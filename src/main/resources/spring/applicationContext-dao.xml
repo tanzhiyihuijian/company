@@ -19,6 +19,7 @@
 
     <!--加载数据库资源文件-->
     <context:property-placeholder location="classpath*:jdbc.properties"/>
+    <context:property-placeholder location="classpath*:mongodb.properties"/>
 
     <context:component-scan base-package="cn.com.dom4j.base.dao" />
     <context:component-scan base-package="cn.com.dom4j.base.job" />

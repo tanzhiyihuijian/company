@@ -1,11 +1,15 @@
 package cn.com.dom4j.web.springmvc.controller;
 
+import cn.com.dom4j.base.common.util.QiniuUtils;
 import cn.com.dom4j.base.model.pojo.User;
 import cn.com.dom4j.base.service.IUserService;
+import cn.com.dom4j.config.QiNiuConfig;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -24,6 +28,39 @@ public class Controller1 {
 
     @Resource
     private IUserService userService;
+
+    @RequestMapping("/upload")
+    public ModelAndView upload() {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/test/qiniuUpload");
+        return mv;
+    }
+
+    @RequestMapping("/upload-x")
+    public String uploadX(String name, @RequestParam("file") MultipartFile file) {
+
+
+
+        String s = QiniuUtils.uploadFile(file, QiNiuConfig.CHROME_DEFAULT_IMAGE_PATH + file.getOriginalFilename(), QiNiuConfig.BUCKET_QINIU_CHROME);
+
+        System.out.println(s);
+
+        return null;
+    }
+
+    @RequestMapping("/upload-y")
+    public String uploadY(String name, @RequestParam("file") MultipartFile file) {
+
+
+
+        String s = QiniuUtils.uploadFile(file, QiNiuConfig.CHROME_DEFAULT_IMAGE_PATH + file.getOriginalFilename(), QiNiuConfig.BUCKET_QINIU_CHROME);
+
+        System.out.println(s);
+
+        return null;
+    }
+
+
 
     @RequestMapping("/test1")
     public ModelAndView test1() {

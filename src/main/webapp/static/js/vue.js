@@ -827,7 +827,7 @@ var arrayKeys = Object.getOwnPropertyNames(arrayMethods);
 
 /**
  * By default, when a reactive property is set, the new value is
- * also converted to become reactive. However when passing down props,
+ * also converted to become reactive. However when passing down conf,
  * we don't want to force conversion because the value may be a nested value
  * under a frozen data structure. Converting it would defeat the optimization.
  */
@@ -1172,7 +1172,7 @@ strats.data = function (
 };
 
 /**
- * Hooks and props are merged as arrays.
+ * Hooks and conf are merged as arrays.
  */
 function mergeHook (
   parentVal,
@@ -1278,7 +1278,7 @@ function checkComponents (options) {
 }
 
 /**
- * Ensure all props option syntax are normalized into the
+ * Ensure all conf option syntax are normalized into the
  * Object-based format.
  */
 function normalizeProps (options) {
@@ -1294,7 +1294,7 @@ function normalizeProps (options) {
         name = camelize(val);
         res[name] = { type: null };
       } else {
-        warn('props must be strings when using array syntax.');
+        warn('conf must be strings when using array syntax.');
       }
     }
   } else if (isPlainObject(props)) {
@@ -1427,7 +1427,7 @@ function validateProp (
   var prop = propOptions[key];
   var absent = !hasOwn(propsData, key);
   var value = propsData[key];
-  // handle boolean props
+  // handle boolean conf
   if (isType(Boolean, prop.type)) {
     if (absent && !hasOwn(prop, 'default')) {
       value = false;
@@ -1903,7 +1903,7 @@ function extractPropsFromVNodeData (
             (formatComponentName(tag || Ctor)) + ", but the declared prop name is" +
             " \"" + key + "\". " +
             "Note that HTML attributes are case-insensitive and camelCased " +
-            "props need to use their kebab-case equivalents when using in-DOM " +
+            "conf need to use their kebab-case equivalents when using in-DOM " +
             "templates. You should probably use \"" + altKey + "\" instead of \"" + key + "\"."
           );
         }
@@ -2570,7 +2570,7 @@ function updateChildComponent (
   vm.$attrs = parentVnode.data && parentVnode.data.attrs;
   vm.$listeners = listeners;
 
-  // update props
+  // update conf
   if (propsData && vm.$options.props) {
     observerState.shouldConvert = false;
     var props = vm._props;
@@ -3087,11 +3087,11 @@ function checkOptionType (vm, name) {
 function initProps (vm, propsOptions) {
   var propsData = vm.$options.propsData || {};
   var props = vm._props = {};
-  // cache prop keys so that future props updates can iterate using Array
+  // cache prop keys so that future conf updates can iterate using Array
   // instead of dynamic object key enumeration.
   var keys = vm.$options._propKeys = [];
   var isRoot = !vm.$parent;
-  // root instance props should be converted
+  // root instance conf should be converted
   observerState.shouldConvert = isRoot;
   var loop = function ( key ) {
     keys.push(key);
@@ -3116,8 +3116,8 @@ function initProps (vm, propsOptions) {
         }
       });
     }
-    // static props are already proxied on the component's prototype
-    // during Vue.extend(). We only need to proxy props defined at
+    // static conf are already proxied on the component's prototype
+    // during Vue.extend(). We only need to proxy conf defined at
     // instantiation here.
     if (!(key in vm)) {
       proxy(vm, "_props", key);
@@ -3317,7 +3317,7 @@ function stateMixin (Vue) {
       );
     };
     propsDef.set = function () {
-      warn("$props is readonly.", this);
+      warn("$conf is readonly.", this);
     };
   }
   Object.defineProperty(Vue.prototype, '$data', dataDef);
@@ -3484,7 +3484,7 @@ var componentVNodeHooks = {
     var child = vnode.componentInstance = oldVnode.componentInstance;
     updateChildComponent(
       child,
-      options.propsData, // updated props
+      options.propsData, // updated conf
       options.listeners, // updated listeners
       vnode, // new parent vnode
       options.children // new children
@@ -3578,12 +3578,12 @@ function createComponent (
   // component constructor creation
   resolveConstructorOptions(Ctor);
 
-  // transform component v-model data into props & events
+  // transform component v-model data into conf & events
   if (isDef(data.model)) {
     transformModel(Ctor.options, data);
   }
 
-  // extract props
+  // extract conf
   var propsData = extractPropsFromVNodeData(data, Ctor, tag);
 
   // functional component
@@ -3596,7 +3596,7 @@ function createComponent (
 
   if (isTrue(Ctor.options.abstract)) {
     // abstract components do not keep anything
-    // other than props & listeners & slot
+    // other than conf & listeners & slot
 
     // work around flow
     var slot = data.slot;
@@ -4182,9 +4182,9 @@ function initMixin (Vue) {
     initEvents(vm);
     initRender(vm);
     callHook(vm, 'beforeCreate');
-    initInjections(vm); // resolve injections before data/props
+    initInjections(vm); // resolve injections before data/conf
     initState(vm);
-    initProvide(vm); // resolve provide after data/props
+    initProvide(vm); // resolve provide after data/conf
     callHook(vm, 'created');
 
     /* istanbul ignore if */
@@ -4366,7 +4366,7 @@ function initExtend (Vue) {
     );
     Sub['super'] = Super;
 
-    // For props and computed properties, we define the proxy getters on
+    // For conf and computed properties, we define the proxy getters on
     // the Vue instances at extension time, on the extended prototype. This
     // avoids Object.defineProperty calls for each instance created.
     if (Sub.options.props) {
@@ -4625,7 +4625,7 @@ Vue$3.version = '2.4.0';
 // during template compilation
 var isReservedAttr = makeMap('style,class');
 
-// attributes that should be using props for binding
+// attributes that should be using conf for binding
 var acceptValue = makeMap('input,textarea,option,select');
 var mustUseProp = function (tag, type, attr) {
   return (
@@ -7481,7 +7481,7 @@ function getRealChild (vnode) {
 function extractTransitionData (comp) {
   var data = {};
   var options = comp.$options;
-  // props
+  // conf
   for (var key in options.propsData) {
     data[key] = comp[key];
   }
@@ -9453,7 +9453,7 @@ function genData$2 (el, state) {
   if (el.attrs) {
     data += "attrs:{" + (genProps(el.attrs)) + "},";
   }
-  // DOM props
+  // DOM conf
   if (el.props) {
     data += "domProps:{" + (genProps(el.props)) + "},";
   }
