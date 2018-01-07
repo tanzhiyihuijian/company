@@ -1,5 +1,6 @@
 package cn.com.dom4j.base.dao.mapper;
 
+import cn.com.dom4j.base.common.dynamic.DataSource;
 import cn.com.dom4j.base.model.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.List;
 @Repository
 public interface UserMapper {
 
+    @DataSource("dataSource")
     List<User> listUser();
 
 

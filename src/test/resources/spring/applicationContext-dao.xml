@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://mybatis.org/schema/mybatis-spring
+            http://mybatis.org/schema/mybatis-spring.xsd">
+    <!--
+    数据访问层配置项
+    1. 数据库连接资源文件jdbc.propertiesties
+    2. 数据库连接池
+    3. sqlSessionFactory
+    4. mapper扫描器
+    -->
+
+    <!--加载数据库资源文件-->
+    <context:property-placeholder location="classpath*:jdbc.properties"/>
+    <context:property-placeholder location="classpath*:mongodb.properties"/>
+
+    <context:component-scan base-package="cn.com.dom4j.base.dao" />
+    <context:component-scan base-package="cn.com.dom4j.base.job" />
+    <context:component-scan base-package="cn.com.dom4j.base.model" />
+    <context:component-scan base-package="cn.com.dom4j.base.service" />
+
+
+    <!--数据库连接池-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="parentDataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="initialSize" value="15" />							<!-- 初始化连接数 -->
+        <property name="minIdle" value="20" />								<!-- 最小空闲连接数 -->
+        <property name="maxIdle" value="50" />								<!-- 最大空闲连接数 -->
+        <property name="maxTotal" value="60" />						    	<!-- 最大连接数 -->
+        <property name="maxWaitMillis" value="10000" />						<!-- 最大获取连接池连接等待时间(毫秒) -->
+        <property name="logAbandoned" value="true" />						<!-- 是否在自动回收超时连接的时候打印连接的超时错误 -->
+        <property name="testWhileIdle" value="true" />						<!-- 空闲时是否验证, 若不通过断掉连接, 前提是空闲对象回收器开启状态 -->
+        <property name="removeAbandonedOnBorrow" value="true" />			<!-- 是否自动回收超时连接 -->
+        <property name="removeAbandonedTimeout" value="180" />				<!-- 超时时间(秒) -->
+        <property name="timeBetweenEvictionRunsMillis" value="1800000" />	<!-- 空闲对象回收器由运行间隔(毫秒)，若需要回收, 该值最好小于 minEvictableIdleTimeMillis值 -->
+        <property name="minEvictableIdleTimeMillis" value="3600000" />      <!-- 被空闲对象回收器回收前在池中保持空闲状态的最小时间(毫秒) -->
+    </bean>
+
+
+    <bean id="readDataSource" class="org.apache.commons.dbcp2.BasicDataSource" parent="parentDataSource">
+        <property name="url" value="${jdbc.read.url}"/>
+        <property name="username" value="${jdbc.read.username}"/>
+        <property name="password" value="${jdbc.read.password}"/>
+    </bean>
+
+    <bean id="writeDataSource" class="org.apache.commons.dbcp2.BasicDataSource" parent="parentDataSource">
+        <property name="url" value="${jdbc.write.url}"/>
+        <property name="username" value="${jdbc.write.username}"/>
+        <property name="password" value="${jdbc.write.password}"/>
+    </bean>
+
+    <bean id="webDataSource" class="org.apache.commons.dbcp2.BasicDataSource" parent="parentDataSource">
+        <property name="url" value="${jdbc.web.url}"/>
+        <property name="username" value="${jdbc.web.username}"/>
+        <property name="password" value="${jdbc.web.password}"/>
+    </bean>
+
+    <!-- 数据路由 dataSource -->
+    <bean id="routingDataSource" class="cn.com.dom4j.base.common.LinkageRoutingDataSource">
+        <property name="targetDataSources">
+            <map key-type="java.lang.String">
+                <entry value-ref="writeDataSource" key="writeDataSource" />
+                <entry value-ref="readDataSource" key="readDataSource" />
+            </map>
+        </property>
+        <property name="defaultTargetDataSource" ref="writeDataSource" />      <!-- 默认使用的数据源 -->
+    </bean>
+
+    <bean id="jdbcTe">
+
+    </bean>
+
+
+    <!--spring 和 mybatis整合, jar包由 mybatis提供-->
+    <!--配置 sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--数据库连接池-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--加载 mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis/sqlMapConfig.xml"/>
+        <!--扫描 mapper.xml-->
+        <property name="mapperLocations" value="classpath:cn/com/dom4j/base/dao/mapper/config/*.xml" />
+    </bean>
+
+
+    <!--mapper扫描器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--扫描包路径, 如果需要扫描多个中间中半角逗号隔开-->
+        <!--mapper.java 和 mapper.xml不在同一个目录下-->
+        <property name="basePackage" value="cn.com.dom4j.base.dao.mapper"/>
+
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+
+
+
+
+
+</beans>

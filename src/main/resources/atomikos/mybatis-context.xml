@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+       default-lazy-init="true">
+
+    <description>MyBatis的数据库持久层配置/配置主-从数据源</description>
+    <bean id="masterSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:atomikos/mybatis-config-master.xml" />
+        <property name="dataSource" ref="masterDataSource" />
+    </bean>
+
+    <bean id="slaveSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:atomikos/mybatis-config-slave.xml" />
+        <property name="dataSource" ref="slaveDataSource" />
+    </bean>
+
+    <!-- mapper 的管理及注入 -->
+    <bean id="memberMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="masterSqlSessionFactory" />
+        <property name="mapperInterface" value="cn.com.dom4j.base.common.jta.mapper.MemberMapper"/>
+    </bean>
+
+    <bean id="memberInfoMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="sqlSessionFactory" ref="slaveSqlSessionFactory" />
+        <property name="mapperInterface" value="cn.com.dom4j.base.common.jta.mapper.MemberInfoMapper"/>
+    </bean>
+
+
+</beans>  

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <description>事务配置</description>
+
+    <!-- atomikos事务管理器 -->
+    <bean id="atomikosTransactionManager" class="com.atomikos.icatch.jta.UserTransactionManager" init-method="init" destroy-method="close">
+        <property name="forceShutdown" value="true"/>
+    </bean>
+
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="300"/>
+    </bean>
+
+    <!-- spring 事务管理器 -->
+    <bean id="springTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="atomikosTransactionManager" />
+        <property name="userTransaction" ref="atomikosUserTransaction" />
+        <property name="allowCustomIsolationLevels" value="true"/>
+    </bean>
+
+    <aop:config proxy-target-class="true">
+        <aop:advisor pointcut="(execution(* cn.com.dom4j.base.common.jta.service.*.*(..)))" advice-ref="" />
+    </aop:config>
+
+    <tx:advice id="txAdvice" transaction-manager="springTransactionManager">
+        <tx:attributes>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="has*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="locate*" propagation="REQUIRED" read-only="true"/>
+            <tx:method name="register*" propagation="REQUIRED" rollback-for="java.lang.Exception"/>
+        </tx:attributes>
+    </tx:advice>
+
+
+
+</beans>

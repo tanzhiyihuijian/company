@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.dom4j.base.dao.mapper.CityMapper">
+
+    <resultMap id="cityMap" type="cn.com.dom4j.base.model.po.City">
+        <id property="id" column="id" />
+        <result property="cityId" column="cityId" />
+        <result property="city" column="city" />
+        <result property="provinceId" column="provinceId" />
+    </resultMap>
+
+    <sql id="selectCityAll">
+        SELECT
+          id, cityId, city, provinceId
+        FROM
+          cities
+    </sql>
+    <update id="updateCity" parameterType="cn.com.dom4j.base.model.po.City">
+        UPDATE
+          cities
+        SET
+          cityId = #{cityId},
+          city = #{city},
+          provinceId = #{provinceId}
+        WHERE
+          id = #{id}
+    </update>
+
+    <select id="getCityById" resultMap="cityMap" parameterType="int">
+        <include refid="selectCityAll" />
+        WHERE
+          id = #{id}
+    </select>
+
+
+</mapper>

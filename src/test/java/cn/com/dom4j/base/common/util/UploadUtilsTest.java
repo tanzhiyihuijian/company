@@ -1,6 +1,6 @@
 package cn.com.dom4j.base.common.util;
 
-import cn.com.dom4j.config.QiNiuConfig;
+//import cn.com.dom4j.config.QiNiuConfig;
 import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.Configuration;
@@ -30,6 +30,7 @@ public class UploadUtilsTest {
 
 
 
+/*
 
         // 上传到服务器后的文件名
         String key = "aaa.jpg";
@@ -49,6 +50,7 @@ public class UploadUtilsTest {
         } catch (QiniuException e) {
             e.printStackTrace();
         }
+*/
 
 
     }

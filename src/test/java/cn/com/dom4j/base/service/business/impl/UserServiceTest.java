@@ -1,14 +1,14 @@
-package cn.com.dom4j.base.service.impl;
+package cn.com.dom4j.base.service.business.impl;
 
-import cn.com.dom4j.base.service.IUserService;
+import cn.com.dom4j.base.model.pojo.User;
+import cn.com.dom4j.base.service.db.IUserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 
 /**
@@ -21,13 +21,15 @@ import java.util.Map;
 @ContextConfiguration({"classpath:springmvc.xml", "classpath:spring/applicationContext-*.xml"})
 public class UserServiceTest {
 
-//    @Resource
-//    private IUserService userService;
+    @Resource
+    private IUserService userService;
 
     @Test
     public void listUser() throws Exception {
 
-//        userService.listUser();
+        List<User> users = userService.listUser();
+
+        System.out.println(users);
 
 
     }

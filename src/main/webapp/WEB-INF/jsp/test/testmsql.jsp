@@ -27,6 +27,9 @@
         <li>${user.id} | ${user.name} | ${user.password}</li>
     </c:forEach>
 
+    <br>
+
+    ${name}
 
 </body>
 </html>

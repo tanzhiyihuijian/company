@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.dom4j.base.common.jta.mapper.MemberInfoMapper">
+
+
+    <insert id="insert" parameterType="cn.com.dom4j.base.common.jta.entity.MemberInfo" >
+        insert into member_info
+          (nickname, realname, age)
+        values
+          (#{nickname}, #{realname}, #{age})
+    </insert>
+</mapper>

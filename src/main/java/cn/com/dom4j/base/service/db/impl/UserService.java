@@ -1,15 +1,17 @@
-package cn.com.dom4j.base.service.impl;
+package cn.com.dom4j.base.service.db.impl;
 
 import cn.com.dom4j.base.dao.impl.UserDao;
 import cn.com.dom4j.base.model.pojo.User;
-import cn.com.dom4j.base.service.IUserService;
+import cn.com.dom4j.base.service.db.IUserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by 王波 on 2017/7/11
+ * @author bobo (bo.wang@laowantong.cc)
+ * @date 2017年11月08日
+ * @desc
  */
 @Service
 public class UserService implements IUserService {

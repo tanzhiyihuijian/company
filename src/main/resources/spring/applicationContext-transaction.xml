@@ -1,17 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context.xsd
-	http://www.springframework.org/schema/aop
-	http://www.springframework.org/schema/aop/spring-aop.xsd
-	http://www.springframework.org/schema/tx
-	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
     <!--
@@ -26,29 +17,94 @@
 
 
     <!--事物管理器-->
+    <!--
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <!--注入连接池-->
-        <property name="dataSource" ref="dataSource"/>
+        &lt;!&ndash;注入数据源&ndash;&gt;
+        <property name="dataSource" ref="dynamicDataSource"/>
     </bean>
+
+    <bean id="transactionInterceptor" class="cn.com.dom4j.base.common.dynamic.TransactionAspect" />
+    <aop:config>
+        <aop:aspect id="transactionAspect" ref="transactionInterceptor">
+            <aop:pointcut id="transactionPointcut" expression="execution(* cn.com.dom4j.base.service.db.*.*(..))" />
+            <aop:before pointcut-ref="transactionPointcut" method="before" />
+            <aop:after pointcut-ref="transactionPointcut" method="after" />
+        </aop:aspect>
+    </aop:config>
+    -->
+
+
 
 
     <!--配置通知, 事务控制-->
     <!--定义一个增强-->
+    <!--
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <!--增强的属性配置-->
+        &lt;!&ndash;增强的属性配置&ndash;&gt;
         <tx:attributes>
-            <!--
+            &lt;!&ndash;
                 isolation: 事务的隔离级别
                 propagation: 事务的传播行为
                 timeout: 过期时间, -1表示永不过期
                 no-rollback-for: 发生哪些异常不回滚
                 rollback-for: 发生哪些异常依旧提交事务
                 read-only:　是否只读
-            -->
+            &ndash;&gt;
             <tx:method name="save*" propagation="REQUIRED"/>
         </tx:attributes>
     </tx:advice>
+    -->
 
+
+    <!-- 多数据源事务 -->
+
+    <!-- atomikos 事务管理器 -->
+    <bean id="atomikosTransactionManager"
+          class="com.atomikos.icatch.jta.UserTransactionManager"
+          init-method="init" destroy-method="close">
+
+        <description>UserTransactionManager</description>
+        <property name="forceShutdown" value="true"/>
+    </bean>
+
+    <bean id="atomikosUserTransaction" class="com.atomikos.icatch.jta.UserTransactionImp">
+        <property name="transactionTimeout" value="300" />
+    </bean>
+
+
+    <!-- spring 事务管理器 -->
+    <bean id="springTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager">
+        <property name="transactionManager" ref="atomikosTransactionManager" />
+        <property name="userTransaction" ref="atomikosUserTransaction" />
+        <property name="allowCustomIsolationLevels" value="true" />
+    </bean>
+
+    <!-- 事务拦截器 -->
+    <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+        <!-- 配置事务管理器 -->
+        <property name="transactionManager" ref="springTransactionManager" />
+        <!-- 方法名: 要求的事务属性 -->
+        <property name="transactionAttributes">
+            <props>
+                <prop key="insertTest">
+                    PROPAGATION_REQUIRED, ISOLATION_REPEATABLE_READ
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="beanNames">
+            <list>
+                <value>atomTransactionServiceImpl</value>
+            </list>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>transactionInterceptor</value>
+            </list>
+        </property>
+    </bean>
 
 
 

@@ -1,10 +1,15 @@
 package cn.com.dom4j.web.springmvc.controller;
 
 import cn.com.dom4j.base.common.util.QiniuUtils;
+import cn.com.dom4j.base.model.po.City;
 import cn.com.dom4j.base.model.pojo.User;
-import cn.com.dom4j.base.service.IUserService;
-import cn.com.dom4j.config.QiNiuConfig;
+import cn.com.dom4j.base.service.db.ICityService;
+import cn.com.dom4j.base.service.db.IReadTableService;
+import cn.com.dom4j.base.service.db.IUserService;
+//import cn.com.dom4j.config.QiNiuConfig;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -29,6 +35,12 @@ public class Controller1 {
     @Resource
     private IUserService userService;
 
+    @Resource
+    private ICityService cityService;
+
+    @Resource
+    private IReadTableService readTableService;
+
     @RequestMapping("/upload")
     public ModelAndView upload() {
         ModelAndView mv = new ModelAndView();
@@ -36,7 +48,21 @@ public class Controller1 {
         return mv;
     }
 
-    @RequestMapping("/upload-x")
+    @RequestMapping("register")
+    public ModelAndView register(HttpServletRequest request, ModelMap modelMap) {
+
+        String contextPath = request.getContextPath();
+        System.out.println(contextPath);
+
+        City city = cityService.getCityById(20);
+
+        System.out.println(city);
+
+        return new ModelAndView("/web/user/register", modelMap);
+    }
+
+
+    /*@RequestMapping("/upload-x")
     public String uploadX(String name, @RequestParam("file") MultipartFile file) {
 
 
@@ -59,7 +85,7 @@ public class Controller1 {
 
         return null;
     }
-
+*/
 
 
     @RequestMapping("/test1")
@@ -125,12 +151,29 @@ public class Controller1 {
 
         List<User> users = userService.listUser();
 
+        User user = users.get(2);
+        String name = user.getName();
+        String password = user.getPassword();
+
+        name = filter(name);
+
+
         ModelAndView mv = new ModelAndView();
         mv.addObject("users", users);
+        mv.addObject("name", name);
 
         mv.setViewName("/test/testmsql");
 
         return mv;
+
+    }
+
+    private String filter(String str) {
+
+        str = StringUtils.replaceChars(str, "\'", "");
+
+        return StringUtils.replaceChars(str, "\"", "");
+
 
     }
 
